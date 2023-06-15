@@ -1,15 +1,15 @@
-#
-# Build stage
-#
-FROM maven:3.8.2-jdk-11 AS build
-COPY . .
-RUN mvn clean package -DskipTests
+FROM ubuntu:latest AS build
 
-#
-# Package stage
-#
-FROM openjdk:11-jdk-slim
-COPY --from=build /target/demo-0.0.1-SNAPSHOT.jar demo.jar
-# ENV PORT=8080
+RUN apt-get update
+RUN apt-get install openjdk-17-jdk -y
+COPY . .
+
+RUN ./gradlew bootJar --no-daemon
+
+FROM openjdk:17-jdk-slim
+
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","demo.jar"]
+
+COPY --from=build /build/libs/demo-1.jar app.jar
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
