@@ -9,4 +9,4 @@ RUN mkdir -p build/dependency && (cd build/dependency; jar -xf ../libs/*-SNAPSHO
 FROM eclipse-temurin:17-jdk-alpine
 VOLUME /tmp
 ARG DEPENDENCY=/workspace/app/build/dependency
-ENTRYPOINT ["java","-cp","app:app/lib/*","demo.Application"]
+ENTRYPOINT ["java","-cp","app:app/lib/*","DemoApplication"]
